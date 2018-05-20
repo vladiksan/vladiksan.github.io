@@ -25,6 +25,21 @@
 <script type="text/javascript" src="game.js"></script>
 <script type="text/javascript" src="record.js"></script>
 <script type="text/javascript">
+	
+var status = false;
+var getUserGame = function(){
+	VK.api("users.get", {}, function(data) { 
+               console.log(data.response[0].last_name);
+            });
+}
+	
+VK.init(function(){
+	status = true;
+	console.log("vk init");
+	getUserGame();
+}, function(){
+	console.log("error");
+}, '5.75');
 
 var width = 640, height = 480;
 
@@ -34,8 +49,8 @@ pjs.system.initFPSCheck();
 pjs.keyControl.isInputMode();
 pjs.keyControl.getInputChar();
 pjs.game.getTime();
-var lm = pjs.memory.local;
 
+var lm = pjs.memory.local;
 var log = pjs.system.log;
 var game = pjs.game;
 var OOP = pjs.OOP;
@@ -60,6 +75,9 @@ var score = 0;
 var score1 = 0;
 var helth = 3;
 window.name = 'fXD';
+
+
+
 
 var records = new Records(10); // максимальное количество участников
 var col = 6;
@@ -295,15 +313,6 @@ game.newLoop('GameOver', function () {
 	}
 
 	if (mouse.isPeekObject('LEFT', pushVK)) {
-			
-var VK = require('../vk-api');
-VK.init();
-
-VK.api('users.get', {
-	user_ids: 1
-},function(err, data) {
-	console.log(data.response);
-})
 
 	}
 

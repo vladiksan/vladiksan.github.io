@@ -1,22 +1,6 @@
 var Menu = function () {
 
-var getUserGame = function(){
-	console.log(1);
-	VK.api("users.get", {'user_ids' : 1}, function(data) { 
-               console.log(data.response[0].last_name);
-            });
-}
-	
-VK.init(function(){
-	status = true;
-	console.log("good");
-	getUserGame();
-}, function(){
-	console.log("bad");
-}, '5.75');
-
 	this.update = function () {
-	
 
 		var time = pjs.game.getTime();
 
