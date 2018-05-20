@@ -14,7 +14,7 @@ VK.init(function(){
 	getUserGame();
 }, function(){
 	console.log("bad");
-}, '5.62');
+}, '5.75');
 
 	this.update = function () {
 	
