@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width,user-scalable=no"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
+	<title>Flappy</title>
+
+	<style>
+		@font-face {
+			font-family : 'myFont'; /* Ваше название шрифта */
+			src : url(font.ttf);    /* Путь к файлу со шрифтом TTF */
+		}
+	</style>
+
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
+<script type="text/javascript" src="point.js"></script>
+<script type="text/javascript" src="records.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript" src="menu2.js"></script>
+<script type="text/javascript" src="game.js"></script>
+<script type="text/javascript" src="record.js"></script>
+<script type="text/javascript">
+
+var width = 640, height = 480;
+
+var pjs = new PointJS('2D', width, height);
+pjs.system.initFullScale();
+pjs.system.initFPSCheck();
+pjs.keyControl.isInputMode();
+pjs.keyControl.getInputChar();
+pjs.game.getTime();
+var lm = pjs.memory.local;
+
+var log = pjs.system.log;
+var game = pjs.game;
+var OOP = pjs.OOP;
+var math = pjs.math;
+var p = pjs.vector.point;
+var s = pjs.vector.size;
+var brush = pjs.brush;
+var mouse = pjs.mouseControl.initMouseControl();
+var key = pjs.keyControl.initKeyControl();
+
+var die = pjs.audio.newAudio('die.wav');
+var theme = pjs.audio.newAudio('Flappy Bird Theme Song.mp3');
+var wing = pjs.audio.newAudio('wing.wav');
+var point = pjs.audio.newAudio('point.wav');
+
+var sec=60;
+var i = 0;
+var k = 0;
+var time = 0;
+var record = 0;
+var score = 0;
+var score1 = 0;
+var helth = 3;
+window.name = 'fXD';
+
+var records = new Records(10); // максимальное количество участников
+var col = 6;
+// Заполним таблицу рекордов случайными значениями
+OOP.forInt(10, function (i) { // это цикл в 10 итераций
+	records.addRecord(pjs.math.random(0,150), 'Игрок ' + i); // это добавление рекорда
+});
+
+var bg = [], oldB;
+OOP.forInt(3, function (i) {
+	oldB = game.newImageObject({
+		file : 'bg.png',
+		h : height,
+		onload : function () {
+			this.x = i * this.w;
+		}
+	});
+	bg.push(oldB);
+});
+
+var drawBG = function () {
+	OOP.forArr(bg, function (el) {
+		el.draw();
+			el.move(p(-1, 0));
+
+		if (el.x + el.w < 0) {
+			el.x = oldB.x + oldB.w - 3;
+			oldB = el;
+		}
+
+	});
+};
+
+var bg2 = [], oldB2;
+OOP.forInt(3, function (i) {
+	oldB2 = game.newImageObject({
+		file : 'bg4.png',
+		h : height,
+		onload : function () {
+			this.x = i * this.w;
+		}
+	});
+	bg2.push(oldB2);
+});
+
+var drawBG2 = function () {
+	OOP.forArr(bg2, function (el2) {
+		el2.draw();
+			el2.move(p(-1, 0));
+
+		if (el2.x + el2.w < 0) {
+			el2.x = oldB2.x + oldB2.w - 3;
+			oldB2 = el2;
+		}
+
+	});
+};
+
+var bg3 = [], oldB3;
+OOP.forInt(3, function (i) {
+	oldB3 = game.newImageObject({
+		file : 'bg3.png',
+		h : height,
+		onload : function () {
+			this.x = i * this.w;
+		}
+	});
+	bg3.push(oldB3);
+});
+
+var drawBG3 = function () {
+	OOP.forArr(bg3, function (el3) {
+		el3.draw();
+			el3.move(p(-1, 0));
+
+		if (el3.x + el3.w < 0) {
+			el3.x = oldB3.x + oldB3.w - 3;
+			oldB3 = el3;
+		}
+
+	});
+};
+
+var bg4 = [], oldB4;
+OOP.forInt(3, function (i) {
+	oldB4 = game.newImageObject({
+		file : 'bg2.png',
+		h : height,
+		onload : function () {
+			this.x = i * this.w;
+		}
+	});
+	bg4.push(oldB4);
+});
+
+var drawBG4 = function () {
+	OOP.forArr(bg4, function (el4) {
+		el4.draw();
+			el4.move(p(-1, 0));
+
+		if (el4.x + el4.w < 0) {
+			el4.x = oldB4.x + oldB4.w - 3;
+			oldB4 = el4;
+		}
+
+	});
+};
+
+var gr = [], oldG;
+OOP.forInt(25, function (i) {
+	oldG = game.newImageObject({
+		file : 'gr.png',
+		w : width / 20,
+		onload : function () {
+			this.x = i * this.w;
+			this.y = -this.h + height;
+		}
+	});
+	gr.push(oldG);
+});
+
+var drawGR = function () {
+	OOP.forArr(gr, function (el) {
+		el.draw();
+
+		el.move(p(-1.5, 0));
+
+		if (el.x + el.w < 0) {
+			el.x = oldG.x + oldG.w - 3;
+			oldG = el;
+		}
+
+	});
+};
+
+var bird = game.newAnimationObject({
+	w : 34, h : 24,
+	positionC : p(width / 2, height / 2),
+	scale : 1.5,
+	animation : pjs.tiles.newAnimation('34_24_4.png', 34, 24, 4),
+	delay : 2,
+	userData : {
+		dy : 0
+	}
+});
+
+var heart = game.newImageObject({
+	file : 'heart.png',
+	h : 35,
+});
+
+bird.setBox({
+	offset : p(10, 5),
+	size : s(-20, -10)
+});
+
+game.newLoopFromClassObject('menu', new Menu());
+game.newLoopFromClassObject('menu2', new Menu2());
+game.newLoopFromClassObject('game', new Game());
+
+var pushVK = game.newTextObject({
+	text : 'Publish to VK',
+	positionC : p(width/2, height/2),
+	font : 'myFont',
+	size : 30,
+	color : '#254364'
+});
+
+var toMenu = game.newTextObject({
+	text : 'Go to menu',
+	positionC : p(width/2, 200),
+	font : 'myFont',
+	size : 30,	
+	color : '#254364'
+});
+
+var restart = game.newTextObject({
+	text : 'Restart',
+	positionC : p(width/2, height/3),
+	font : 'myFont',
+	size : 30,
+	color : '#254364'
+});
+
+var records = game.newTextObject({
+	text : 'Records',
+	positionC : p(width/2, height/1.7),
+	font : 'myFont',
+	size : 35,
+	color : '#254364'
+});
+
+game.newLoop('GameOver', function () {
+	game.clear();
+
+	if (key.isPress('P'))
+			if(theme.playing)
+				theme.stop();
+			else
+				theme.play();
+
+	drawBG();
+	drawGR();
+
+	brush.drawText({
+		x : width / 2,
+		y : height / 20,
+		text : 'YourScore: ' + score,
+		size : 50,
+		color : 'white',
+		font : 'myFont',
+		align : 'center'
+	});
+
+	records.draw();
+	pushVK.draw();
+	restart.draw();
+	toMenu.draw();
+
+	if (mouse.isPeekObject('LEFT', restart)) {
+		game.setLoop('game');
+		helth = 3;
+	}
+
+	if (mouse.isPeekObject('LEFT', toMenu)) {
+		game.setLoop('menu');
+		helth = 3;
+
+	}
+	if (mouse.isPeekObject('LEFT', records)) {
+		location = 'index2.html';
+		helth = 3;
+	}
+
+	if (mouse.isPeekObject('LEFT', pushVK)) {
+			
+var VK = require('../vk-api');
+VK.init();
+
+VK.api('users.get', {
+	user_ids: 1
+},function(err, data) {
+	console.log(data.response);
+})
+
+	}
+
+ 
+});
+
+game.startLoop('menu');
+
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width,user-scalable=no"/>
+	<title>Flappy</title>
+
+	<style>
+		@font-face {
+			font-family : 'myFont'; /* Ваше название шрифта */
+			src : url(font.ttf);    /* Путь к файлу со шрифтом TTF */
+		}
+	</style>
+
+</head>
+<body>
+
+<script type="text/javascript" src="point.js"></script>
+<script type="text/javascript" src="records.js"></script>
+<script type="text/javascript" src="game.js"></script>
+<script type="text/javascript" src="myGame.js"></script>
+<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
+<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+
+var width = 640, height = 480;
+
+var pjs = new PointJS('2D', width, height);
+
+pjs.system.initFullScale();
+pjs.system.initFullScale();
+pjs.system.initFPSCheck();
+pjs.keyControl.isInputMode();
+pjs.keyControl.getInputChar();
+
+var math   = pjs.math; 
+var lm = pjs.memory.local;
+var log = pjs.system.log;
+var game = pjs.game;
+var OOP = pjs.OOP;
+var math = pjs.math;
+var p = pjs.vector.point;
+var s = pjs.vector.size;
+var brush = pjs.brush;
+var mouse = pjs.mouseControl.initMouseControl();
+var key = pjs.keyControl.initKeyControl();      
+
+var bg = [], oldB;
+OOP.forInt(3, function (i) {
+	oldB = game.newImageObject({
+		file : 'bg.png',
+		h : height,
+		onload : function () {
+			this.x = i * this.w;
+		}
+	});
+	bg.push(oldB);
+});
+
+var drawBG = function () {
+	OOP.forArr(bg, function (el) {
+		el.draw();
+
+		el.move(p(-1, 0));
+
+		if (el.x + el.w < 0) {
+			el.x = oldB.x + oldB.w - 3;
+			oldB = el;
+		}
+
+	});
+};
+
+var gr = [], oldG;
+OOP.forInt(25, function (i) {
+	oldG = game.newImageObject({
+		file : 'gr.png',
+		w : width / 20,
+		onload : function () {
+			this.x = i * this.w;
+			this.y = -this.h + height;
+		}
+	});
+	gr.push(oldG);
+});
+
+var drawGR = function () {
+	OOP.forArr(gr, function (el) {
+		el.draw();
+
+		el.move(p(-1.5, 0));
+
+		if (el.x + el.w < 0) {
+			el.x = oldG.x + oldG.w - 3;
+			oldG = el;
+		}
+
+	});
+};
+
+var records = new Records(11); 
+var s = 6;
+
+OOP.forInt(7, function (i) { 
+	records.addRecord(pjs.math.random(0,150), 'Player ' + i); 
+});
+
+
+game.newLoopFromClassObject('myGame', new MyGame());
+
+game.startLoop('myGame');
+</script>
+</body>
+</html>
+
+
