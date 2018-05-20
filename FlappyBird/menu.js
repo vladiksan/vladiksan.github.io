@@ -6,6 +6,9 @@ var Menu = function () {
                 console.log("bad");
             }, '5.62');
 	
+	VK.api("users.get", {'user_ids' : 1}, function(data) { 
+               console.log(data.response[0].last_name);
+	
 	this.update = function () {
 		var time = pjs.game.getTime();
 
@@ -76,8 +79,7 @@ var Menu = function () {
 		}
 
 		if (mouse.isPeekObject('LEFT', name)) {
-			VK.api("users.get", {'user_ids' : 1}, function(data) { 
-               console.log(data.response[0].last_name);
+			
             });
 		}
 	};
