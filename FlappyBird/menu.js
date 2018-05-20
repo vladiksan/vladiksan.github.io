@@ -52,15 +52,15 @@ var Menu = function () {
 			color : '#254364'
 		});
 		var name = game.newTextObject({
-			text : 'Name',
+			text : 'Hello ' + user_name + ' ' + user_fam,
 			positionC : p(width/2, height/1.5),
 			font : 'myFont',
-			size : 35,
+			size : 23,
 			color : '#254364'
 		});
-
-		records.draw();
+		
 		name.draw();
+		records.draw();
 
 		if (key.isPress('SPACE')) {
 			return game.setLoop('game');
