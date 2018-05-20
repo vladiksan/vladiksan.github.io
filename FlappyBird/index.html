@@ -25,10 +25,13 @@
 <script type="text/javascript" src="game.js"></script>
 <script type="text/javascript" src="record.js"></script>
 <script type="text/javascript">
-	
+var user_fam = '';
+var user_name = '';
 var status = false;
 var getUserGame = function(){
 	VK.api("users.get", {}, function(data) { 
+		user_fam = data.response[0].last_name;
+		user_name = data.response[0].first_name;
                console.log(data.response[0].last_name);
             });
 }
