@@ -1,0 +1,121 @@
+var drawBlocks = function () {
+
+		OOP.forArr(blocks, function (el, i) {
+
+			el.top.draw();
+
+			el.bottom.draw();
+
+			el.mid.draw();
+
+
+
+				//Скорость
+
+
+
+			if (score >= 0 && score < 10){
+
+				el.top.move(p(-1.5, 0));
+
+				el.bottom.move(p(-1.5, 0));
+
+				el.mid.move(p(-1.5, 0));
+
+			}
+
+			if (score >= 10 && score < 20){
+
+				el.top.move(p(-2, 0));
+
+				el.bottom.move(p(-2, 0));
+
+				el.mid.move(p(-2, 0));
+
+			}
+
+			if (score >= 20 && score < 30){
+
+				el.top.move(p(-2.5, 0));
+
+				el.bottom.move(p(-2.5, 0));
+
+				el.mid.move(p(-2.5, 0));
+
+			}
+
+			if (score >= 30 && score < 40){
+
+				el.top.move(p(-3, 0));
+
+				el.bottom.move(p(-3, 0));
+
+				el.mid.move(p(-3, 0));
+
+			}
+
+			if (score >= 40 && score < 50){
+
+				el.top.move(p(-3.5, 0));
+
+				el.bottom.move(p(-3.5, 0));
+
+				el.mid.move(p(-3.5, 0));
+
+			}
+
+			if (score >= 50){
+
+				el.top.move(p(-4, 0));
+
+				el.bottom.move(p(-4, 0));
+
+				el.mid.move(p(-4, 0));
+
+			}
+
+
+
+				// Рисование новых
+
+
+
+			if (el.top.x + el.top.w < 0) {
+
+				el.mid.x = el.top.x = el.bottom.x = oldBlock.top.x + oldBlock.top.w + pjs.math.random(150, 400);
+
+				oldBlock = el;
+
+
+
+				if (score > record){
+
+					pjs.memory.local.save('record', score);
+
+				}
+
+				else{
+
+					pjs.memory.local.save('record', score);
+
+				}
+
+				point.play();
+
+			}
+
+
+
+			if (el.mid.h == width/2){
+
+				
+
+						
+
+
+
+						score+=1;
+
+
+
+					}
