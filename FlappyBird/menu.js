@@ -1,15 +1,23 @@
 var Menu = function () {
 
-	VK.init(function(){
-                console.log("good");
-            }, function(){
-                console.log("bad");
-            }, '5.62');
-	
-	VK.api("users.get", {'user_ids' : 1}, function(data) { 
-               console.log(data.response[0].last_name);
-	
+var status = false;
+var getUserGame = function(){
+	console.log(1);
+	VK.api('users.get', {'user_ids' : 97708946}, function(data) { 
+               console.log(data);
+            });
+}
+
+VK.init(function(){
+	status = true;
+	console.log("good");
+	getUserGame();
+}, function(){
+	console.log("bad");
+}, '5.62');
+
 	this.update = function () {
+	
 		var time = pjs.game.getTime();
 
 		function checkTime(i){
@@ -79,8 +87,7 @@ var Menu = function () {
 		}
 
 		if (mouse.isPeekObject('LEFT', name)) {
-			
-            });
+
 		}
 	};
 };
